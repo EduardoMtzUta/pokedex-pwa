@@ -1,25 +1,35 @@
 import "./App.css";
 import { useEffect, useState } from "react";
 import Swal from 'sweetalert2';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 
 
 function App() {
 
-  const [pokemon, setPokemon] = useState({});
+  const [pokemon, setPokemon] = useState([]);
+  const [busqueda, setBusqueda]  = useState("");
+
 
   const fetchPokemon = (id) => {
     fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)
       .then((response) => response.json())
       .then((data) => setPokemon(data));
+      
   };
+
+
+  const handleChange = e => {
+    setBusqueda(e.target.value);
+  }
 
   const showAlert = () => {
     Swal.fire({
       title: pokemon?.name,
       text: pokemon?.abilities?.map((ability) => ability.ability.name),
       imageUrl: pokemon?.sprites?.front_default,
-      imageWidth: 300,
-      imageHeight: 300,
+      imageWidth: 200,
+      imageHeight: 200,
       imageAlt: 'Custom image',
     })
   }
@@ -46,8 +56,10 @@ function App() {
 
   useEffect(() => {
     console.log({ pokemon });
-    console.log(pokemon?.abilities?.map((ability) => ability.ability.name));
   }, [pokemon]);
+  useEffect(() =>{
+    console.log({busqueda});
+  },[busqueda])
 
   return (
     <div className="App">
@@ -76,6 +88,10 @@ function App() {
             alt="logo"
           />
         </div>
+        <div>
+          <TextField id="outlined-search" label="Search Pokemon" type="search" value={busqueda} onChange={handleChange}/>
+          <Button variant="outlined" onClick={() => fetchPokemon(busqueda)}>Search....</Button>
+        </div>
         <p>Id: {pokemon.id ?? "No pokemon selected"}</p>
         <p>Name: {pokemon.name ?? "No pokemon selected"}</p>
         {pokemon.id ? (
@@ -90,7 +106,8 @@ function App() {
             <br />
           </>
         ) : (
-          <p></p>
+          
+          <label></label>
         )}
         <div className="flex-container">
           {pokemon.id ? (
