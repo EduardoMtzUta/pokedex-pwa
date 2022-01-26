@@ -67,7 +67,7 @@ function App() {
         <div className="flex-container">
           <a
             className="alignCentral"
-            href="https://github.com/EduardoMtzUta/pokedex"
+            href="https://github.com/EduardoMtzUta/pokedex-pwa"
           >
             Github
           </a>
